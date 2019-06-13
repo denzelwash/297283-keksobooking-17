@@ -1,7 +1,7 @@
 'use strict';
 
-var similarArray = [];
-var imagesArray = [];
+var similars = [];
+var images = [];
 var types = ['palace', 'flat', 'house', 'bungalo'];
 var MAX_WIDTH = document.querySelector('.map__pins').offsetWidth;
 var MIN_Y_COORDS = 130;
@@ -18,9 +18,9 @@ function getRandom(max) {
 }
 
 function setAvatar() {
-  var random = getRandom(imagesArray.length);
-  var imageNumber = imagesArray.splice(random, 1);
-  return '0' + imageNumber;
+  var random = getRandom(images.length);
+  var imageNumber = images.splice(random, 1);
+  return 'img/avatars/user0' + imageNumber + '.png';
 }
 
 function setType() {
@@ -30,29 +30,31 @@ function setType() {
 function setLocation(direction) {
   if (direction === 'x') {
     return getRandom(MAX_WIDTH + 1);
-  } else {
-    return getRandom(MAX_Y_COORDS - MIN_Y_COORDS) + MIN_Y_COORDS + 1;
   }
+  return getRandom(MAX_Y_COORDS - MIN_Y_COORDS) + MIN_Y_COORDS + 1;
 }
 
 function createPin(obj) {
   var clonePin = PIN_BLOCK.cloneNode(true);
-  var stylePin = 'left: ' + (obj.location.x - PIN_WIDTH / 2) + 'px; top: ' + (obj.location.y - PIN_HEIGHT) + 'px;';
+  var location = obj.location;
+  function createStyle() {
+    return 'left: ' + (location.x - PIN_WIDTH / 2) + 'px; top: ' + (location.y - PIN_HEIGHT) + 'px;';
+  }
 
-  clonePin.setAttribute('style', stylePin);
+  clonePin.setAttribute('style', createStyle());
   clonePin.children[0].setAttribute('src', obj.author.avatar);
   clonePin.setAttribute('alt', obj.offer.type);
   fragment.appendChild(clonePin);
 }
 
 for (var i = 1; i <= SIMILAR_LENGTH; i++) {
-  imagesArray.push(i);
+  images.push(i);
 }
 
 for (var k = 1; k <= SIMILAR_LENGTH; k++) {
-  similarArray.push({
+  similars.push({
     'author': {
-      'avatar': 'img/avatars/user' + setAvatar() + '.png',
+      'avatar': setAvatar(),
     },
     'offer': {
       'type': setType()
@@ -67,7 +69,7 @@ for (var k = 1; k <= SIMILAR_LENGTH; k++) {
 document.querySelector('.map').classList.remove('map--faded');
 
 for (var j = 1; j <= SIMILAR_LENGTH; j++) {
-  createPin(similarArray[j - 1]);
+  createPin(similars[j - 1]);
 }
 
 document.querySelector('.map__pins').appendChild(fragment);
