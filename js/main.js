@@ -17,31 +17,32 @@ function getRandom(max) {
   return Math.floor(Math.random() * max);
 }
 
-function setAvatar() {
+function getAvatar() {
   var random = getRandom(images.length);
   var imageNumber = images.splice(random, 1);
   return 'img/avatars/user0' + imageNumber + '.png';
 }
 
-function setType() {
+function getType() {
   return types[getRandom(types.length)];
 }
 
-function setLocation(direction) {
+function getLocation(direction) {
   if (direction === 'x') {
     return getRandom(MAX_WIDTH + 1);
   }
   return getRandom(MAX_Y_COORDS - MIN_Y_COORDS) + MIN_Y_COORDS + 1;
 }
 
+function createStyle(obj) {
+  return 'left: ' + (obj.x - PIN_WIDTH / 2) + 'px; top: ' + (obj.y - PIN_HEIGHT) + 'px;';
+}
+
 function createPin(obj) {
   var clonePin = PIN_BLOCK.cloneNode(true);
   var location = obj.location;
-  function createStyle() {
-    return 'left: ' + (location.x - PIN_WIDTH / 2) + 'px; top: ' + (location.y - PIN_HEIGHT) + 'px;';
-  }
 
-  clonePin.setAttribute('style', createStyle());
+  clonePin.setAttribute('style', createStyle(location));
   clonePin.children[0].setAttribute('src', obj.author.avatar);
   clonePin.setAttribute('alt', obj.offer.type);
   fragment.appendChild(clonePin);
@@ -54,14 +55,14 @@ for (var i = 1; i <= SIMILAR_LENGTH; i++) {
 for (var k = 1; k <= SIMILAR_LENGTH; k++) {
   similars.push({
     'author': {
-      'avatar': setAvatar(),
+      'avatar': getAvatar(),
     },
     'offer': {
-      'type': setType()
+      'type': getType()
     },
     'location': {
-      'x': setLocation('x'),
-      'y': setLocation('y')
+      'x': getLocation('x'),
+      'y': getLocation('y')
     }
   });
 }
