@@ -16,7 +16,11 @@ var ADD_FORM = document.querySelector('.ad-form');
 var MAP_FILTER = document.querySelector('.map__filters');
 var ADD_FORM_FIELDS = ADD_FORM.children;
 var MAP_FILTER_FIELDS = MAP_FILTER.children;
-var ADDRESS = document.querySelector('#address');
+var ADDRESS_FIELD = document.querySelector('#address');
+var TYPE_FIELD = document.querySelector('#type');
+var PRICE_FIELD = document.querySelector('#price');
+var TIMEIN_FIELD = document.querySelector('#timein');
+var TIMEOUT_FIELD = document.querySelector('#timeout');
 var PIN_MAIN = document.querySelector('.map__pin--main');
 var MAP = document.querySelector('.map');
 var PIN_MAIN_WIDTH = 62;
@@ -95,10 +99,10 @@ function getMainPinCoords() {
 function fillAdress(first) {
   var coords = getMainPinCoords();
   if (first) {
-    ADDRESS.setAttribute('value', coords.x + ' ' + (coords.y - PIN_MAIN_HEIGHT + PIN_MAIN_WIDTH / 2));
+    ADDRESS_FIELD.setAttribute('value', coords.x + ' ' + (coords.y - PIN_MAIN_HEIGHT + PIN_MAIN_WIDTH / 2));
     return;
   }
-  ADDRESS.setAttribute('value', coords.x + ' ' + coords.y);
+  ADDRESS_FIELD.setAttribute('value', coords.x + ' ' + coords.y);
 }
 
 for (var i = 1; i <= SIMILAR_LENGTH; i++) {
@@ -131,4 +135,32 @@ PIN_MAIN.addEventListener('click', function () {
   activatePage();
   document.querySelector('.map__pins').appendChild(fragment);
   fillAdress();
+});
+
+TYPE_FIELD.addEventListener('change', function () {
+  var price;
+  switch (TYPE_FIELD.value) {
+    case 'bungalo':
+      price = 0;
+      break;
+    case 'flat':
+      price = 1000;
+      break;
+    case 'house':
+      price = 5000;
+      break;
+    case 'palace':
+      price = 10000;
+      break;
+  }
+  PRICE_FIELD.setAttribute('min', price);
+  PRICE_FIELD.setAttribute('placeholder', price);
+});
+
+TIMEIN_FIELD.addEventListener('change', function () {
+  TIMEOUT_FIELD.value = TIMEIN_FIELD.value;
+});
+
+TIMEOUT_FIELD.addEventListener('change', function () {
+  TIMEIN_FIELD.value = TIMEOUT_FIELD.value;
 });
