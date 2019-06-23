@@ -154,8 +154,6 @@ TIMEOUT_FIELD.addEventListener('change', function () {
   TIMEIN_FIELD.value = TIMEOUT_FIELD.value;
 });
 
-// ////////////// последнее дз
-
 var pinArrowX = PIN_MAIN.offsetLeft + PIN_MAIN_HALF;
 var pinArrowY = PIN_MAIN.offsetTop + PIN_MAIN_HEIGHT;
 
