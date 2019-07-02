@@ -19,10 +19,11 @@
         continue;
       }
       var clonePin = PIN_BLOCK.cloneNode(true);
+      var pinImg = clonePin.children[0];
       var location = similars[i].location;
       clonePin.setAttribute('style', createStyle(location));
-      clonePin.children[0].setAttribute('src', similars[i].author.avatar);
-      clonePin.children[0].setAttribute('alt', similars[i].offer.type);
+      pinImg.setAttribute('src', similars[i].author.avatar);
+      pinImg.setAttribute('alt', similars[i].offer.type);
       similarsFragment.appendChild(clonePin);
     }
   }
