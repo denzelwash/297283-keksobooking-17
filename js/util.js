@@ -11,6 +11,7 @@
     ADDRESS_FIELD: document.querySelector('#address'),
     ADD_FORM: document.querySelector('.ad-form'),
     pageActivated: false,
+    MAIN_BLOCK: document.querySelector('main'),
     getRandom: function (max) {
       return Math.floor(Math.random() * max);
     }
