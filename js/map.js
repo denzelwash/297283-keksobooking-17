@@ -5,7 +5,7 @@
     window.util.pageActivated = true;
     window.util.MAP.classList.remove('map--faded');
     window.util.ADD_FORM.classList.remove('ad-form--disabled');
-    document.querySelector('.map__pins').appendChild(window.data.similarsFragment);
+    window.util.PINS_WRAPPER.appendChild(window.data.similarsFragment);
     window.form.activateFormsFields();
   }
 
