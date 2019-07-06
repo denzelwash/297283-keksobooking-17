@@ -7,6 +7,7 @@
     window.util.ADD_FORM.classList.remove('ad-form--disabled');
     window.util.PINS_WRAPPER.appendChild(window.data.similarsFragment);
     window.form.activateFormsFields();
+    window.data.createCardFragment(window.data.similarsNewData[0]);
   }
 
   function getMainPinCoords() {

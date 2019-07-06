@@ -2,6 +2,7 @@
 
 (function () {
   var MAP_TYPE_FILTER = document.querySelector('#housing-type');
+  window.filter = {};
 
   MAP_TYPE_FILTER.addEventListener('change', function () {
     var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -20,7 +21,8 @@
     }
 
     window.util.PINS_WRAPPER.appendChild(window.data.similarsFragment);
+    window.filter.newData = newData;
+    // console.log(window.filter.newData);
   });
-
 
 })();
