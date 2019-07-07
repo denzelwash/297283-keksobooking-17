@@ -6,6 +6,7 @@
 
   MAP_TYPE_FILTER.addEventListener('change', function () {
     var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var card = document.querySelector('.map__card');
     var newData = window.data.originalSimilarsData.filter(function (item) {
       return item.offer.type === MAP_TYPE_FILTER.value;
     });
@@ -22,7 +23,12 @@
 
     window.util.PINS_WRAPPER.appendChild(window.data.similarsFragment);
     window.filter.newData = newData;
-    // console.log(window.filter.newData);
+
+    if (card) {
+      window.util.MAP.removeChild(card);
+    }
+
+    window.map.setPinsHandlers();
   });
 
 })();

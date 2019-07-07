@@ -7,7 +7,49 @@
     window.util.ADD_FORM.classList.remove('ad-form--disabled');
     window.util.PINS_WRAPPER.appendChild(window.data.similarsFragment);
     window.form.activateFormsFields();
-    window.data.createCardFragment(window.data.similarsNewData[0]);
+    setPinsHandlers();
+  }
+
+  function setPinsHandlers() {
+    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    pins.forEach(function (elem, index) {
+      setHandler(elem, index);
+    });
+  }
+
+  function setHandler(elem, index) {
+    elem.addEventListener('click', function () {
+      if (elem.classList.contains('map__pin--active')) {
+        return;
+      }
+
+      var oldCard = document.querySelector('.map__card');
+      var activePin = document.querySelector('.map__pin--active');
+
+      if (oldCard) {
+        window.util.MAP.removeChild(oldCard);
+      }
+
+      if (activePin) {
+        activePin.classList.remove('map__pin--active');
+      }
+
+      elem.classList.add('map__pin--active');
+      window.data.createCardFragment(window.data.similarsNewData[index]);
+
+      var newCard = document.querySelector('.map__card');
+      var closeButton = newCard.querySelector('.popup__close');
+      closeButton.addEventListener('click', function () {
+        closePopup(newCard, elem);
+      });
+
+    });
+
+    function closePopup(card, pin) {
+      window.util.MAP.removeChild(card);
+      pin.classList.remove('map__pin--active');
+    }
+    window.map.closePopup = closePopup;
   }
 
   function getMainPinCoords() {
@@ -82,7 +124,19 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
+  document.addEventListener('keydown', function (e) {
+    if (e.keyCode !== 27) {
+      return;
+    }
+    var card = document.querySelector('.map__card');
+    var activePin = document.querySelector('.map__pin--active');
+    if (!!card && !!activePin) {
+      window.map.closePopup(card, activePin);
+    }
+  });
+
   window.map = {
-    getMainPinCoords: getMainPinCoords
+    getMainPinCoords: getMainPinCoords,
+    setPinsHandlers: setPinsHandlers
   };
 })();
