@@ -14,6 +14,15 @@
     house: 5000,
     palace: 10000
   };
+  var ROOM_CAPACITY = {
+    '1': ['1'],
+    '2': ['1', '2'],
+    '3': ['1', '2', '3'],
+    '100': ['0']
+  };
+  var ROOM_FIELD = document.querySelector('#room_number');
+  var CAPACITY_FIELD = document.querySelector('#capacity');
+  var CAPACITY_OPTIONS = CAPACITY_FIELD.querySelectorAll('option');
 
   function deactivateFormsFields() {
     for (var i = 0; i < ADD_FORM_FIELDS.length; i++) {
@@ -56,6 +65,21 @@
 
   TIMEOUT_FIELD.addEventListener('change', function () {
     TIMEIN_FIELD.value = TIMEOUT_FIELD.value;
+  });
+
+  ROOM_FIELD.addEventListener('change', function () {
+    var room = ROOM_FIELD.value;
+    var capacity = ROOM_CAPACITY[room];
+    var selected;
+    CAPACITY_OPTIONS.forEach(function (item) {
+      item.removeAttribute('selected');
+      item.setAttribute('disabled', '');
+      if (capacity.indexOf(item.value) !== -1) {
+        item.removeAttribute('disabled');
+        selected = item;
+      }
+    });
+    selected.setAttribute('selected', '');
   });
 
   deactivateFormsFields();

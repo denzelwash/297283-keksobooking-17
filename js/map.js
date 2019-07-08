@@ -49,6 +49,7 @@
       window.util.MAP.removeChild(card);
       pin.classList.remove('map__pin--active');
     }
+
     window.map.closePopup = closePopup;
   }
 
