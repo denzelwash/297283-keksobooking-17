@@ -1,12 +1,27 @@
 'use strict';
 
 (function () {
+  window.map = {};
+  var firstActivate = false;
+
   function activatePage() {
-    window.util.pageActivated = true;
     window.util.MAP.classList.remove('map--faded');
     window.util.ADD_FORM.classList.remove('ad-form--disabled');
     window.util.PINS_WRAPPER.appendChild(window.data.similarsFragment);
+    if (!firstActivate) {
+      var FIRST_ADDRESS_VALUE = window.util.ADDRESS_FIELD.getAttribute('value').split(',');
+      window.map.FIRST_COORDS = {
+        x: +FIRST_ADDRESS_VALUE[0],
+        y: Math.floor(+FIRST_ADDRESS_VALUE[1] + window.util.PIN_MAIN_HALF + window.util.PIN_ARROW_HEIGHT)
+      };
+      window.map.FIRST_POSITION = {
+        left: window.util.PIN_MAIN.style.left,
+        top: window.util.PIN_MAIN.style.top,
+      };
+      firstActivate = true;
+    }
     window.form.activateFormsFields();
+    window.util.pageActivated = true;
     setPinsHandlers();
   }
 
@@ -67,10 +82,10 @@
 
   window.util.PIN_MAIN.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
+    window.util.PIN_MAIN.style.position = 'absolute';
+    window.util.PIN_MAIN.style.zIndex = 10;
     if (!window.util.pageActivated) {
       activatePage();
-      window.util.PIN_MAIN.style.position = 'absolute';
-      window.util.PIN_MAIN.style.zIndex = 10;
     }
     var coords = {
       x: evt.clientX,
@@ -136,8 +151,6 @@
     }
   });
 
-  window.map = {
-    getMainPinCoords: getMainPinCoords,
-    setPinsHandlers: setPinsHandlers
-  };
+  window.map.getMainPinCoords = getMainPinCoords;
+  window.map.setPinsHandlers = setPinsHandlers;
 })();
