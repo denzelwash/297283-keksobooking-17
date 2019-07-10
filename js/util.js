@@ -18,4 +18,5 @@
     }
   };
   window.util.PIN_MAIN_HALF = window.util.PIN_MAIN_WIDTH / 2;
+  window.util.PIN_ARROW_HEIGHT = window.util.PIN_MAIN_HEIGHT - window.util.PIN_MAIN_WIDTH;
 })();

@@ -10,7 +10,6 @@
   var FILTER_BLOCK = document.querySelector('.map__filters-container');
   var ERROR_TEMPLATE = document.querySelector('#error');
   var ERROR_BLOCK = ERROR_TEMPLATE.content.querySelector('.error');
-  var similarsFragment = document.createDocumentFragment();
   var HOUSE_TYPE = {
     flat: 'Квартира',
     bungalo: 'Бунгало',
@@ -23,6 +22,7 @@
   }
 
   function createSimilarsFragment(similars) {
+    var similarsFragment = document.createDocumentFragment();
     var similarsNewData = [];
     for (var i = 0; i < similars.length; i++) {
       var similar = similars[i];
@@ -42,6 +42,7 @@
       similarsFragment.appendChild(clonePin);
     }
     window.data.similarsNewData = similarsNewData;
+    window.data.similarsFragment = similarsFragment;
   }
 
   function createCardFragment(obj) {
@@ -90,17 +91,28 @@
     var cloneError = ERROR_BLOCK.cloneNode(true);
     var errorButton = cloneError.querySelector('.error__button');
     window.util.MAIN_BLOCK.appendChild(cloneError);
-    errorButton.addEventListener('click', function () {
-      window.location.reload();
-    });
+    errorButton.addEventListener('click', closeErrorHandler);
+    cloneError.addEventListener('click', closeErrorHandler);
+    document.addEventListener('keydown', keyCloseErrorHandler);
+
+    function closeErrorHandler() {
+      window.util.MAIN_BLOCK.removeChild(cloneError);
+      document.removeEventListener('keydown', keyCloseErrorHandler);
+    }
+
+    function keyCloseErrorHandler(evt) {
+      if (evt.keyCode === 27) {
+        closeErrorHandler();
+      }
+    }
   }
 
   window.load(successHandler, errorHandler);
 
   window.data = {
-    similarsFragment: similarsFragment,
     createSimilarsFragment: createSimilarsFragment,
-    createCardFragment: createCardFragment
+    createCardFragment: createCardFragment,
+    errorHandler: errorHandler
   };
 
 })();
