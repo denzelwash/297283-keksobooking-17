@@ -1,9 +1,8 @@
 'use strict';
 
 (function () {
-  var MAP_FILTER = document.querySelector('.map__filters');
   var ADD_FORM_FIELDS = window.util.ADD_FORM.children;
-  var MAP_FILTER_FIELDS = MAP_FILTER.children;
+  var MAP_FILTER_FIELDS = window.util.MAP_FILTER.children;
   var TYPE_FIELD = document.querySelector('#type');
   var PRICE_FIELD = document.querySelector('#price');
   var TIMEIN_FIELD = document.querySelector('#timein');
@@ -31,7 +30,6 @@
     for (var i = 0; i < ADD_FORM_FIELDS.length; i++) {
       ADD_FORM_FIELDS[i].setAttribute('disabled', true);
     }
-
     for (var k = 0; k < MAP_FILTER_FIELDS.length; k++) {
       MAP_FILTER_FIELDS[k].setAttribute('disabled', true);
     }
@@ -41,7 +39,6 @@
     for (var i = 0; i < ADD_FORM_FIELDS.length; i++) {
       ADD_FORM_FIELDS[i].removeAttribute('disabled');
     }
-
     for (var k = 0; k < MAP_FILTER_FIELDS.length; k++) {
       MAP_FILTER_FIELDS[k].removeAttribute('disabled');
     }
@@ -113,7 +110,7 @@
     var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
     window.util.ADD_FORM.reset();
-    MAP_FILTER.reset();
+    window.util.MAP_FILTER.reset();
 
     if (card) {
       window.util.MAP.removeChild(card);
@@ -142,6 +139,7 @@
       });
       document.addEventListener('keydown', keyCloseSuccessHandler);
     }
+
     function keyCloseSuccessHandler(e) {
       if (e.keyCode === 27) {
         window.util.MAIN_BLOCK.removeChild(cloneSuccess);

@@ -8,6 +8,7 @@
     window.util.MAP.classList.remove('map--faded');
     window.util.ADD_FORM.classList.remove('ad-form--disabled');
     window.util.PINS_WRAPPER.appendChild(window.data.similarsFragment);
+
     if (!firstActivate) {
       var FIRST_ADDRESS_VALUE = window.util.ADDRESS_FIELD.getAttribute('value').split(',');
       window.map.FIRST_COORDS = {
@@ -20,6 +21,7 @@
       };
       firstActivate = true;
     }
+
     window.form.activateFormsFields();
     window.util.pageActivated = true;
     setPinsHandlers();
@@ -44,7 +46,6 @@
       if (oldCard) {
         window.util.MAP.removeChild(oldCard);
       }
-
       if (activePin) {
         activePin.classList.remove('map__pin--active');
       }
