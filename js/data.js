@@ -24,6 +24,7 @@
   function createSimilarsFragment(similars) {
     var similarsFragment = document.createDocumentFragment();
     var similarsNewData = [];
+
     for (var i = 0; i < similars.length; i++) {
       var similar = similars[i];
       if (!similar.offer) {
@@ -41,6 +42,7 @@
       pinImg.setAttribute('alt', similar.offer.type);
       similarsFragment.appendChild(clonePin);
     }
+
     window.data.similarsNewData = similarsNewData;
     window.data.similarsFragment = similarsFragment;
   }
@@ -51,6 +53,7 @@
     var PHOTOS_BLOCK = cloneCard.querySelector('.popup__photos');
     var CLONE_PHOTO = PHOTOS_BLOCK.querySelector('.popup__photo').cloneNode(true);
     var POPUP_AVATAR = cloneCard.querySelector('.popup__avatar');
+
     cloneCard.querySelector('.popup__title').textContent = obj.offer.title;
     cloneCard.querySelector('.popup__text--address').textContent = obj.offer.address;
     cloneCard.querySelector('.popup__text--price').textContent = obj.offer.price + '₽/ночь.';
@@ -90,6 +93,7 @@
   function errorHandler() {
     var cloneError = ERROR_BLOCK.cloneNode(true);
     var errorButton = cloneError.querySelector('.error__button');
+
     window.util.MAIN_BLOCK.appendChild(cloneError);
     errorButton.addEventListener('click', closeErrorHandler);
     cloneError.addEventListener('click', closeErrorHandler);
