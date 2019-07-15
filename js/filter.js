@@ -5,10 +5,11 @@
   var MAP_PRICE_FILTER = document.querySelector('#housing-price');
   var MAP_ROOMS_FILTER = document.querySelector('#housing-rooms');
   var MAP_GUESTS_FILTER = document.querySelector('#housing-guests');
-  var MAP_FUATURES_FILTER = window.util.MAP_FILTER.querySelector('.map__features');
-  var MAP_FUATURES_ITEMS = MAP_FUATURES_FILTER.querySelectorAll('input[type=checkbox]');
+  var MAP_FEATURES_FILTER = window.util.MAP_FILTER.querySelector('.map__features');
+  var MAP_FUATURES_ITEMS = MAP_FEATURES_FILTER.querySelectorAll('input[type=checkbox]');
   var lastTimeout;
-  var MAP_PRICE_VALUES = {
+  var FILTER_DELAY = 500;
+  var MAP_PRICE_VALUE = {
     middle: [10000, 50000],
     low: [0, 10000],
     high: [50000, Infinity]
@@ -37,13 +38,13 @@
       }
     }
 
-    var newData = window.data.originalSimilarsData.filter(function (item) {
+    var filteredPins = window.data.originalSimilarsData.filter(function (item) {
       var offer = item.offer;
 
       if (filterObj.type && filterObj.type !== offer.type) {
         return false;
       }
-      if (filterObj.price && !(MAP_PRICE_VALUES[filterObj.price][0] <= offer.price && offer.price <= MAP_PRICE_VALUES[filterObj.price][1])) {
+      if (filterObj.price && !(MAP_PRICE_VALUE[filterObj.price][0] <= offer.price && offer.price <= MAP_PRICE_VALUE[filterObj.price][1])) {
         return false;
       }
       if (filterObj.rooms && +filterObj.rooms !== offer.rooms) {
@@ -69,9 +70,8 @@
       window.util.MAP.removeChild(card);
     }
 
-    window.data.createSimilarsFragment(newData);
+    window.data.createSimilarsFragment(filteredPins);
     window.util.PINS_WRAPPER.appendChild(window.data.similarsFragment);
-    window.filter.newData = newData;
     window.map.setPinsHandlers();
   }
 
@@ -81,7 +81,7 @@
     }
   });
 
-  MAP_FUATURES_FILTER.addEventListener('click', function (evt) {
+  MAP_FEATURES_FILTER.addEventListener('click', function (evt) {
     if (evt.target.tagName === 'INPUT') {
       debounce(runFilter);
     }
@@ -91,7 +91,7 @@
     if (lastTimeout) {
       clearTimeout(lastTimeout);
     }
-    lastTimeout = setTimeout(func, 500);
+    lastTimeout = setTimeout(func, FILTER_DELAY);
   }
 
 })();

@@ -14,6 +14,13 @@
     ADD_FORM: document.querySelector('.ad-form'),
     pageActivated: false,
     MAIN_BLOCK: document.querySelector('main'),
+    SERVER_VALID_STATUS: 200,
+    verifyEscKey: function (e) {
+      if (e.keyCode === 27) {
+        return true;
+      }
+      return false;
+    },
     getRandom: function (max) {
       return Math.floor(Math.random() * max);
     }
