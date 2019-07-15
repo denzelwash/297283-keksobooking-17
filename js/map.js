@@ -5,17 +5,17 @@
   var firstActivate = false;
 
   function activatePage() {
+    var firstAddressValue = window.util.ADDRESS_FIELD.getAttribute('value').split(',');
     window.util.MAP.classList.remove('map--faded');
     window.util.ADD_FORM.classList.remove('ad-form--disabled');
     window.util.PINS_WRAPPER.appendChild(window.data.similarsFragment);
 
     if (!firstActivate) {
-      var FIRST_ADDRESS_VALUE = window.util.ADDRESS_FIELD.getAttribute('value').split(',');
-      window.map.FIRST_COORDS = {
-        x: +FIRST_ADDRESS_VALUE[0],
-        y: Math.floor(+FIRST_ADDRESS_VALUE[1] + window.util.PIN_MAIN_HALF + window.util.PIN_ARROW_HEIGHT)
+      window.map.firstCoords = {
+        x: +firstAddressValue[0],
+        y: Math.floor(+firstAddressValue[1] + window.util.PIN_MAIN_HALF + window.util.PIN_ARROW_HEIGHT)
       };
-      window.map.FIRST_POSITION = {
+      window.map.firstPosition = {
         left: window.util.PIN_MAIN.style.left,
         top: window.util.PIN_MAIN.style.top,
       };
@@ -60,13 +60,11 @@
       });
 
     });
+  }
 
-    function closePopup(card, pin) {
-      window.util.MAP.removeChild(card);
-      pin.classList.remove('map__pin--active');
-    }
-
-    window.map.closePopup = closePopup;
+  function closePopup(card, pin) {
+    window.util.MAP.removeChild(card);
+    pin.classList.remove('map__pin--active');
   }
 
   function getMainPinCoords() {
@@ -152,6 +150,10 @@
     }
   });
 
-  window.map.getMainPinCoords = getMainPinCoords;
-  window.map.setPinsHandlers = setPinsHandlers;
+  window.map = {
+    getMainPinCoords: getMainPinCoords,
+    setPinsHandlers: setPinsHandlers,
+    closePopup: closePopup
+  };
+
 })();

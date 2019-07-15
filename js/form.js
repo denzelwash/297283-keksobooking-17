@@ -93,7 +93,7 @@
     xhr.responseType = 'json';
     xhr.open('POST', URL);
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === window.util.SERVER_VALID_STATUS) {
         reloadPage(true);
       } else {
         window.data.errorHandler();
@@ -105,7 +105,7 @@
     xhr.send(formData);
   });
 
-  function reloadPage(showPopup) {
+  function reloadPage(popup) {
     var card = document.querySelector('.map__card');
     var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
@@ -120,17 +120,17 @@
       window.util.PINS_WRAPPER.removeChild(item);
     });
 
-    window.util.PIN_MAIN.style.left = window.map.FIRST_POSITION.left;
-    window.util.PIN_MAIN.style.top = window.map.FIRST_POSITION.top;
+    window.util.PIN_MAIN.style.left = window.map.firstPosition.left;
+    window.util.PIN_MAIN.style.top = window.map.firstPosition.top;
     window.util.PIN_MAIN.style.zIndex = '';
-    overwritePinCoords(window.map.FIRST_COORDS.x, window.map.FIRST_COORDS.y);
+    overwritePinCoords(window.map.firstCoords.x, window.map.firstCoords.y);
     window.util.pageActivated = false;
     window.data.createSimilarsFragment(window.data.originalSimilarsData);
     window.form.deactivateFormsFields();
     window.util.MAP.classList.add('map--faded');
     window.util.ADD_FORM.classList.add('ad-form--disabled');
 
-    if (showPopup) {
+    if (popup) {
       var cloneSuccess = SUCCESS_BLOCK.cloneNode(true);
       window.util.MAIN_BLOCK.appendChild(cloneSuccess);
       cloneSuccess.addEventListener('click', function () {
@@ -141,7 +141,7 @@
     }
 
     function keyCloseSuccessHandler(e) {
-      if (e.keyCode === 27) {
+      if (window.util.verifyEscKey(e)) {
         window.util.MAIN_BLOCK.removeChild(cloneSuccess);
         document.removeEventListener('keydown', keyCloseSuccessHandler);
       }

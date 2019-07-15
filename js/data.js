@@ -10,6 +10,7 @@
   var FILTER_BLOCK = document.querySelector('.map__filters-container');
   var ERROR_TEMPLATE = document.querySelector('#error');
   var ERROR_BLOCK = ERROR_TEMPLATE.content.querySelector('.error');
+  var SIMILARS_LIMITER = 5;
   var HOUSE_TYPE = {
     flat: 'Квартира',
     bungalo: 'Бунгало',
@@ -30,7 +31,7 @@
       if (!similar.offer) {
         continue;
       }
-      if (similarsFragment.children.length === 5) {
+      if (similarsFragment.children.length === SIMILARS_LIMITER) {
         break;
       }
       var clonePin = PIN_BLOCK.cloneNode(true);
@@ -105,7 +106,7 @@
     }
 
     function keyCloseErrorHandler(evt) {
-      if (evt.keyCode === 27) {
+      if (window.util.verifyEscKey(evt)) {
         closeErrorHandler();
       }
     }
