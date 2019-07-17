@@ -1,25 +1,26 @@
 'use strict';
 
 (function () {
-  var ADD_FORM_FIELDS = window.util.ADD_FORM.children;
-  var MAP_FILTER_FIELDS = window.util.MAP_FILTER.children;
-  var TYPE_FIELD = document.querySelector('#type');
-  var PRICE_FIELD = document.querySelector('#price');
-  var TIMEIN_FIELD = document.querySelector('#timein');
-  var TIMEOUT_FIELD = document.querySelector('#timeout');
-  var SUCCESS_TEMPLATE = document.querySelector('#success');
-  var SUCCESS_BLOCK = SUCCESS_TEMPLATE.content.querySelector('.success');
-  var ROOM_FIELD = document.querySelector('#room_number');
-  var CAPACITY_FIELD = document.querySelector('#capacity');
-  var CAPACITY_OPTIONS = CAPACITY_FIELD.querySelectorAll('option');
-  var RESET_FORM_BTN = document.querySelector('.ad-form__reset');
-  var RENT_PRICE = {
-    bungalo: 0,
-    flat: 1000,
-    house: 5000,
-    palace: 10000
+  var addFormFields = window.util.addForm.children;
+  var mapFilterFields = window.util.mapFilter.children;
+  var typeField = document.querySelector('#type');
+  var priceField = document.querySelector('#price');
+  var timeInField = document.querySelector('#timein');
+  var timeOutField = document.querySelector('#timeout');
+  var successTemplate = document.querySelector('#success');
+  var successBlock = successTemplate.content.querySelector('.success');
+  var roomField = document.querySelector('#room_number');
+  var capacityField = document.querySelector('#capacity');
+  var capacityOptions = capacityField.querySelectorAll('option');
+  var capacitySelectedOption = capacityField.querySelector('option[selected]');
+  var resetFormBtn = document.querySelector('.ad-form__reset');
+  var RentPrice = {
+    BUNGALO: 0,
+    FLAT: 1000,
+    HOUSE: 5000,
+    PALACE: 10000
   };
-  var ROOM_CAPACITY = {
+  var RoomCapacity = {
     '1': ['1'],
     '2': ['1', '2'],
     '3': ['1', '2', '3'],
@@ -27,51 +28,51 @@
   };
 
   function deactivateFormsFields() {
-    for (var i = 0; i < ADD_FORM_FIELDS.length; i++) {
-      ADD_FORM_FIELDS[i].setAttribute('disabled', true);
+    for (var i = 0; i < addFormFields.length; i++) {
+      addFormFields[i].setAttribute('disabled', true);
     }
-    for (var k = 0; k < MAP_FILTER_FIELDS.length; k++) {
-      MAP_FILTER_FIELDS[k].setAttribute('disabled', true);
+    for (var k = 0; k < mapFilterFields.length; k++) {
+      mapFilterFields[k].setAttribute('disabled', true);
     }
   }
 
   function activateFormsFields() {
-    for (var i = 0; i < ADD_FORM_FIELDS.length; i++) {
-      ADD_FORM_FIELDS[i].removeAttribute('disabled');
+    for (var i = 0; i < addFormFields.length; i++) {
+      addFormFields[i].removeAttribute('disabled');
     }
-    for (var k = 0; k < MAP_FILTER_FIELDS.length; k++) {
-      MAP_FILTER_FIELDS[k].removeAttribute('disabled');
+    for (var k = 0; k < mapFilterFields.length; k++) {
+      mapFilterFields[k].removeAttribute('disabled');
     }
   }
 
   function fillAdress(first) {
     var coords = window.map.getMainPinCoords();
     if (first) {
-      window.util.ADDRESS_FIELD.setAttribute('value', Math.round(coords.x) + ', ' + Math.round(coords.y - window.util.PIN_MAIN_HEIGHT + window.util.PIN_MAIN_HALF));
+      window.util.addressField.setAttribute('value', Math.round(coords.x) + ', ' + Math.round(coords.y - window.util.PIN_MAIN_HEIGHT + window.util.PIN_MAIN_HALF));
       return;
     }
-    window.util.ADDRESS_FIELD.setAttribute('value', Math.round(coords.x) + ', ' + Math.round(coords.y));
+    window.util.addressField.setAttribute('value', Math.round(coords.x) + ', ' + Math.round(coords.y));
   }
 
-  TYPE_FIELD.addEventListener('change', function () {
-    var price = RENT_PRICE[TYPE_FIELD.value];
-    PRICE_FIELD.setAttribute('min', price);
-    PRICE_FIELD.setAttribute('placeholder', price);
+  typeField.addEventListener('change', function () {
+    var price = RentPrice[typeField.value.toUpperCase()];
+    priceField.setAttribute('min', price);
+    priceField.setAttribute('placeholder', price);
   });
 
-  TIMEIN_FIELD.addEventListener('change', function () {
-    TIMEOUT_FIELD.value = TIMEIN_FIELD.value;
+  timeInField.addEventListener('change', function () {
+    timeOutField.value = timeInField.value;
   });
 
-  TIMEOUT_FIELD.addEventListener('change', function () {
-    TIMEIN_FIELD.value = TIMEOUT_FIELD.value;
+  timeOutField.addEventListener('change', function () {
+    timeInField.value = timeOutField.value;
   });
 
-  ROOM_FIELD.addEventListener('change', function () {
-    var room = ROOM_FIELD.value;
-    var capacity = ROOM_CAPACITY[room];
+  roomField.addEventListener('change', function () {
+    var room = roomField.value;
+    var capacity = RoomCapacity[room];
     var selected;
-    CAPACITY_OPTIONS.forEach(function (item) {
+    capacityOptions.forEach(function (item) {
       item.removeAttribute('selected');
       item.setAttribute('disabled', '');
       if (capacity.indexOf(item.value) !== -1) {
@@ -79,19 +80,19 @@
         selected = item;
       }
     });
-    selected.setAttribute('selected', '');
+    capacityField.value = selected.value;
   });
 
   deactivateFormsFields();
   fillAdress(true);
 
-  window.util.ADD_FORM.addEventListener('submit', function (evt) {
+  window.util.addForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    var URL = 'https://js.dump.academy/keksobooking';
+    var url = 'https://js.dump.academy/keksobooking';
     var xhr = new XMLHttpRequest();
-    var formData = new FormData(window.util.ADD_FORM);
+    var formData = new FormData(window.util.addForm);
     xhr.responseType = 'json';
-    xhr.open('POST', URL);
+    xhr.open('POST', url);
     xhr.addEventListener('load', function () {
       if (xhr.status === window.util.SERVER_VALID_STATUS) {
         reloadPage(true);
@@ -109,32 +110,42 @@
     var card = document.querySelector('.map__card');
     var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
-    window.util.ADD_FORM.reset();
-    window.util.MAP_FILTER.reset();
+    window.util.addForm.reset();
+    window.util.mapFilter.reset();
+    priceField.setAttribute('min', RentPrice[typeField.value.toUpperCase()]);
+    priceField.setAttribute('placeholder', RentPrice[typeField.value.toUpperCase()]);
+    capacityOptions.forEach(function (elem) {
+      if (elem !== capacitySelectedOption) {
+        elem.removeAttribute('selected');
+        elem.setAttribute('disabled', '');
+      } else {
+        elem.removeAttribute('disabled');
+        elem.setAttribute('selected', '');
+      }
+    });
 
     if (card) {
-      window.util.MAP.removeChild(card);
+      window.util.map.removeChild(card);
     }
 
     pins.forEach(function (item) {
-      window.util.PINS_WRAPPER.removeChild(item);
+      window.util.pinsWrapper.removeChild(item);
     });
 
-    window.util.PIN_MAIN.style.left = window.map.firstPosition.left;
-    window.util.PIN_MAIN.style.top = window.map.firstPosition.top;
-    window.util.PIN_MAIN.style.zIndex = '';
+    window.util.pinMain.style.left = window.map.firstPosition.left;
+    window.util.pinMain.style.top = window.map.firstPosition.top;
+    window.util.pinMain.style.zIndex = '';
     overwritePinCoords(window.map.firstCoords.x, window.map.firstCoords.y);
     window.util.pageActivated = false;
-    window.data.createSimilarsFragment(window.data.originalSimilarsData);
     window.form.deactivateFormsFields();
-    window.util.MAP.classList.add('map--faded');
-    window.util.ADD_FORM.classList.add('ad-form--disabled');
+    window.util.map.classList.add('map--faded');
+    window.util.addForm.classList.add('ad-form--disabled');
 
     if (popup) {
-      var cloneSuccess = SUCCESS_BLOCK.cloneNode(true);
-      window.util.MAIN_BLOCK.appendChild(cloneSuccess);
+      var cloneSuccess = successBlock.cloneNode(true);
+      window.util.mainBlock.appendChild(cloneSuccess);
       cloneSuccess.addEventListener('click', function () {
-        window.util.MAIN_BLOCK.removeChild(cloneSuccess);
+        window.util.mainBlock.removeChild(cloneSuccess);
         document.removeEventListener('keydown', keyCloseSuccessHandler);
       });
       document.addEventListener('keydown', keyCloseSuccessHandler);
@@ -142,19 +153,19 @@
 
     function keyCloseSuccessHandler(e) {
       if (window.util.verifyEscKey(e)) {
-        window.util.MAIN_BLOCK.removeChild(cloneSuccess);
+        window.util.mainBlock.removeChild(cloneSuccess);
         document.removeEventListener('keydown', keyCloseSuccessHandler);
       }
     }
   }
 
-  RESET_FORM_BTN.addEventListener('click', function (evt) {
+  resetFormBtn.addEventListener('click', function (evt) {
     evt.preventDefault();
     reloadPage();
   });
 
   function overwritePinCoords(x, y) {
-    window.util.ADDRESS_FIELD.setAttribute('value', Math.round(x) + ', ' + Math.round(y));
+    window.util.addressField.setAttribute('value', Math.round(x) + ', ' + Math.round(y));
   }
 
   window.form = {

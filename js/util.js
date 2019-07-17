@@ -4,17 +4,17 @@
   window.util = {
     MIN_Y_COORDS: 130,
     MAX_Y_COORDS: 630,
-    MAP: document.querySelector('.map'),
-    MAP_FILTER: document.querySelector('.map__filters'),
-    PINS_WRAPPER: document.querySelector('.map__pins'),
-    PIN_MAIN: document.querySelector('.map__pin--main'),
     PIN_MAIN_WIDTH: 65,
     PIN_MAIN_HEIGHT: 81,
-    ADDRESS_FIELD: document.querySelector('#address'),
-    ADD_FORM: document.querySelector('.ad-form'),
-    pageActivated: false,
-    MAIN_BLOCK: document.querySelector('main'),
     SERVER_VALID_STATUS: 200,
+    map: document.querySelector('.map'),
+    mapFilter: document.querySelector('.map__filters'),
+    pinsWrapper: document.querySelector('.map__pins'),
+    pinMain: document.querySelector('.map__pin--main'),
+    addressField: document.querySelector('#address'),
+    addForm: document.querySelector('.ad-form'),
+    mainBlock: document.querySelector('main'),
+    pageActivated: false,
     verifyEscKey: function (e) {
       if (e.keyCode === 27) {
         return true;
